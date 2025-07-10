@@ -3,7 +3,11 @@ import { createTweetController } from "../controllers/tweet_controller";
 import { createUser, getUser, getUsers, loginUser } from "../controllers/user_controller";
 import { toggleLikeController } from "../controllers/like_controller";
 import { createComment } from "../controllers/comment_controller";
+
+import { uploadToS3 } from "../config/upload-to-s3";
 import User from "../models/user";
+import Tweet from "../models/tweet";
+
 
 export const resolvers = {
   Query: {
@@ -71,6 +75,11 @@ export const resolvers = {
     login:async(_:any,{email,password}:{email:string,password:string})=>{
       return await loginUser({email,password});
 
+    },
+     uploadTweetImage: async (_: any, { file, tweetId }: { file: any; tweetId: string }) => {
+      const imageUrl = await uploadToS3(file);
+      const tweet = await Tweet.findByIdAndUpdate(tweetId, { image: imageUrl }, { new: true });
+      return tweet;
     }
   },
     Comment: {
