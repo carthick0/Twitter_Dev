@@ -1,6 +1,5 @@
 import AWS from "aws-sdk";
-import dotenv from "dotenv";
-import {Fileupload} from "graphql-upload"
+import dotenv from "dotenv"
 import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
@@ -11,7 +10,7 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION!,
 });
 
-export const uploadToS3 = async (file: FileUpload): Promise<string> => {
+export const uploadToS3 = async (file: any): Promise<string> => {
   const { createReadStream, filename, mimetype } = await file;
   const stream = createReadStream();
 

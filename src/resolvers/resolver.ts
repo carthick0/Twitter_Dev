@@ -4,7 +4,6 @@ import { createUser, getUser, getUsers, loginUser } from "../controllers/user_co
 import { toggleLikeController } from "../controllers/like_controller";
 import { createComment } from "../controllers/comment_controller";
 
-import { uploadToS3 } from "../config/upload-to-s3";
 import User from "../models/user";
 import Tweet from "../models/tweet";
 
@@ -29,7 +28,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    createTweet: async (_: any, { content }: { content: string }) => {
+    createTweet: async (_: any, { content }: { content: string; }, p0: any) => {
       const tweet = await createTweetController(content);
       return tweet;
     },
@@ -76,11 +75,11 @@ export const resolvers = {
       return await loginUser({email,password});
 
     },
-     uploadTweetImage: async (_: any, { file, tweetId }: { file: any; tweetId: string }) => {
-      const imageUrl = await uploadToS3(file);
-      const tweet = await Tweet.findByIdAndUpdate(tweetId, { image: imageUrl }, { new: true });
-      return tweet;
-    }
+    //  uploadTweetImage: async (_: any, { file, tweetId }: { file: any; tweetId: string }) => {
+    //   const imageUrl = await uploadToS3(file);
+    //   const tweet = await Tweet.findByIdAndUpdate(tweetId, { image: imageUrl }, { new: true });
+    //   return tweet;
+    // }
   },
     Comment: {
     user: async (parent: any) => {

@@ -13,7 +13,7 @@ class CrudRepository{
         return this.model.findById(id)
     }
     async getAll(){
-        return this.model.find()
+        return this.model.find({})
     }
     async delete(id:any){
         return this.model.findByIdAndDelete(id);
